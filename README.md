@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is an ios application called WeatherApp to retrieve weather information based on their searching criteria and render the searched results on dashboard screen.
+This is an ios application called WeatherApp to retrieve weather information based on their searching criteria and render the searched results on dashboard screen. You can checkout the demo video in the repository
 
 ## Functionalities
 
