@@ -18,9 +18,22 @@ class WeatherAppTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func cityVM_ShouldHaveDefaultValue() throws {
+        let cityVM = CityViewModel()
+        XCTAssert(!cityVM.city.isEmpty)
+        XCTAssert(cityVM.weather.current.dt != 0)
+        XCTAssert(cityVM.weather.daily[0].dt != 0)
+        XCTAssert(cityVM.weather.hourly[0].dt != 0)
+    }
+    
+    func cityVM_ShouldTriggerChangeWhenCityChange() throws {
+        let currentCityVM = CityViewModel()
+        let americaCityVM = CityViewModel()
+        
+        americaCityVM.city = "America"
+        XCTAssert(americaCityVM.weather.current.clouds != currentCityVM.weather.current.clouds)
+        XCTAssert(americaCityVM.weather.daily[0].temp.max != currentCityVM.weather.daily[0].temp.max)
+        XCTAssert(americaCityVM.weather.hourly[0].temp != currentCityVM.weather.hourly[0].temp)
     }
 
     func testPerformanceExample() throws {

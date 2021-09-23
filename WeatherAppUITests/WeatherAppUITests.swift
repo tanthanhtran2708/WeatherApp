@@ -10,12 +10,7 @@ import XCTest
 class WeatherAppUITests: XCTestCase {
 
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
     }
 
     override func tearDownWithError() throws {
@@ -23,12 +18,8 @@ class WeatherAppUITests: XCTestCase {
     }
 
     func testExample() throws {
-        // UI tests must launch the application that they test.
         let app = XCUIApplication()
         app.launch()
-
-        // Use recording to get started writing UI tests.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
     }
 
     func testLaunchPerformance() throws {
@@ -38,5 +29,81 @@ class WeatherAppUITests: XCTestCase {
                 XCUIApplication().launch()
             }
         }
+    }
+    
+    func testAppManualFlows() {
+        let app = XCUIApplication()
+        app.launch()
+        
+        // Progress view should appear first
+        var progressView = app.children(matching: .progressIndicator).element(boundBy: 0)
+        XCTAssertTrue(progressView.exists)
+        
+        // Sleep for 10 secs then the progressView now dissappear
+        sleep(10)
+        XCTAssertFalse(progressView.exists)
+        
+        // Looking for the text input
+        let searchField = app.children(matching: .textField).element(boundBy: 0)
+        XCTAssertTrue(searchField.exists && !searchField.title.isEmpty) // Must exist and have value
+        if (searchField.isHittable) {
+            searchField.tap()
+        }
+        
+        searchField.typeText("America")
+        
+        // Looking for button and tap on it
+        let searchBtn = app.children(matching: .button).element(boundBy: 0)
+        XCTAssertTrue(searchBtn.exists)
+        if (searchBtn.isHittable) {
+            searchBtn.tap()
+        }
+        
+        // For now, the progress view will appear again
+        progressView = app.children(matching: .progressIndicator).element(boundBy: 0)
+        XCTAssertTrue(progressView.exists)
+        sleep(10)
+        
+        // After 10s then checking for solution
+        let todayLabel = app.children(matching: .textView).element(boundBy: 0)
+        XCTAssert(todayLabel.title == "America")
+    }
+    
+    func testSuggestView() {
+        let app = XCUIApplication()
+        app.launch()
+        
+        // Wait for 10 seconds to finish fetching data
+        sleep(10)
+        
+        // Looking for the text input
+        let searchField = app.children(matching: .textField).element(boundBy: 0)
+        XCTAssertTrue(searchField.exists && !searchField.title.isEmpty) // Must exist and have value
+        if (searchField.isHittable) {
+            searchField.tap()
+        }
+        
+        // First try typing 1 character
+        searchField.typeText("C")
+        var cells = app.children(matching: .textView)
+        
+        // Render nothing
+        XCTAssertTrue(cells.count == 0)
+        
+        searchField.typeText("hi")
+        
+        // For now it should appear available solutions
+        cells = app.children(matching: .textView)
+        XCTAssertTrue(cells.count > 0)
+        
+        // Try tapping one
+        let firstCell = cells.element(boundBy: 0)
+        XCTAssertTrue(firstCell.exists && firstCell.isHittable)
+        firstCell.tap()
+        
+        // Back to the manual searching flow
+        sleep(10)
+        let todayLabel = app.children(matching: .textView).element(boundBy: 0)
+        XCTAssertTrue(todayLabel.title == firstCell.title)
     }
 }
