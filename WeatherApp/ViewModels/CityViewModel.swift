@@ -126,7 +126,7 @@ final class CityViewModel: ObservableObject {
         }
     }
     
-    private func getLocation() {
+    func getLocation() {
         isFetchingData = true
         CLGeocoder().geocodeAddressString(city) { placemarks, Error in
             if (placemarks == nil) {
