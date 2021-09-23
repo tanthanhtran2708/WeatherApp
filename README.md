@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is an ios application called WeatherApp to retrieve weather information based on their searching criteria and render the searched results on dashboard screen. You can checkout the demo video in the repository
+This is an ios application called WeatherApp to retrieve weather information based on their searching criteria and render the searched results on dashboard screen. You can checkout the demo video in the repository. The application is running on an iPhone XSMax version 14.7.1. The minimum OS version to run this application is **14.1**
 
 ## Functionalities
 
